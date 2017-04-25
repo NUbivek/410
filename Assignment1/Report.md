@@ -32,7 +32,7 @@ left out for the purpose of this study as out-of scope observations.
 
 ![image](https://cloud.githubusercontent.com/assets/26909910/25399075/32f3b208-29bc-11e7-9f42-7a1813724fcf.png)
 
-### Table 1: A detailed list of drop conditions to deduce the Sample size.
+   ### Table 1: A detailed list of drop conditions to deduce the Sample size.
 
 ## Predictor variables:
 
