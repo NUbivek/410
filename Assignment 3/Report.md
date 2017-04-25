@@ -12,6 +12,7 @@ We leveraged the PROC CORR in SAS to identify correlation between each individua
 
 ![image](https://cloud.githubusercontent.com/assets/26909910/25407358/09da9ed8-29d8-11e7-8341-40ab008112fe.png)
 Table 1: Correlation of twenty individual stocks with the market index
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25407400/282997ae-29d8-11e7-9779-1021daa3a80b.png)
 Figure 1: Correlation bar chart of twenty individual stocks with the market index
 
