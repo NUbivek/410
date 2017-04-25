@@ -73,10 +73,14 @@ ANOVA table in Table 5 shows the p-value less than 0.0001. This confirms the non
 ![image](https://cloud.githubusercontent.com/assets/26909910/25407666/36338f7a-29d9-11e7-8d9f-a38dd604450a.png)
 
 Table 5: Test-Train ANOVA Table
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25407672/39b28836-29d9-11e7-907d-142415e9732f.png)
 
 Table 6: Coefficient of Determination
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25407680/3e45d9b6-29d9-11e7-88cb-49bb72bc2b98.png)
 
 Table 7: Parameter Estimates for Model1
+
+
 
