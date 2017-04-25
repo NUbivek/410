@@ -10,9 +10,10 @@ We compute the log return of today’s stock price to the yesterday’s stock pr
 
 We leveraged the PROC CORR in SAS to identify correlation between each individual stocks and the market index fund. Table 1 below shows the SAS output of the correlation. As indicated by the Table 1 below, all of the 20 variables have a positive correlation with the market index. The two stocks with highest correlation R values are “HON” and “MMM” – they have the R value of approximately 0.76. DPS seems to be the stock with lowest R value (approximately 0.44).
 
-![image](https://cloud.githubusercontent.com/assets/26909910/25407078/fa5c74c8-29d6-11e7-9f05-98f4cadd139f.png)
-
-![image](https://cloud.githubusercontent.com/assets/26909910/25407104/1b1fa446-29d7-11e7-8222-9eaf7e5c5bdb.png)
+![image](https://cloud.githubusercontent.com/assets/26909910/25407358/09da9ed8-29d8-11e7-8341-40ab008112fe.png)
+Table 1: Correlation of twenty individual stocks with the market index
+![image](https://cloud.githubusercontent.com/assets/26909910/25407400/282997ae-29d8-11e7-9779-1021daa3a80b.png)
+Figure 1: Correlation bar chart of twenty individual stocks with the market index
 
 ## Principal Component Analysis (PCA):
 
