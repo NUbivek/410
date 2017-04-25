@@ -56,7 +56,7 @@ Table 4: Test-Train split frequency table
 
 Using the test-train data above, we were able to deduce our first model to be the following:
 
-    Model 1 (Individual stocks=predictors & train_response=response):
+### Model 1 (Individual stocks=predictors & train_response=response):
     
     train_response (log-return vv) = 0.0000864 + 0.01769* return_AA + 0.03198* return_BAC + 0.00111 * return_BHI 
     + 0.04907 * return_CVX + 0.04674 * return_DD + 0.03642 * return_DOW + 0.03670* return_DPS + 0.04849 * return_GS 
@@ -90,7 +90,7 @@ higher than acceptable, and is seriously flawed. However, a VIF value of 3 or hi
 
 Figure 5: Residual Plot for Model1
 
-## Predictive Accuracy and Goodness-of-fit:
+### Predictive Accuracy and Goodness-of-fit:
 
 After performing the residual analysis, and evaluating the VIF of the model, we calculated mean square error and mean absolute error for both, train and test, datasets. Table 8 below shows the MES and MAE output for Model1, which further confirms that Model 1 is fairly an accurate depiction for both, train and test, datasets. Negligible difference in the MAE and MSE for train and test datasets makes it evident that the Model1 works well in both scenarios.
 
@@ -98,7 +98,7 @@ After performing the residual analysis, and evaluating the VIF of the model, we 
 
 Table 8: MAE and MSE for train and test datasets
 
-## Model 2 (8 principal components=predictor & train_response=response):
+### Model 2 (8 principal components=predictor & train_response=response):
 
         Model2:
 
