@@ -1,4 +1,4 @@
-**Introduction:**
+# Introduction:
 
 This report explains the regression models for the home sale price of a defined sample
 population of houses using the housing data of Ames population from 2,930 observations
@@ -13,7 +13,7 @@ regression models for the home sale price. I used the goodness of fit (GOF) usin
 from SAS. I, then, compared the simple and multiple regression models. In conclusion, based on
 my analysis, I was able to deduce the model that worked the best for our response variable (y).
 
-**Sample population:**
+# Sample population:
 
 The sample population for this study includes all small family houses that were built after year
 1950, have a basement, have a gross living area square foot less than 800 sq. ft., consist of a
