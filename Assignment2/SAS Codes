@@ -1,0 +1,192 @@
+libname mydata'/scs/crb519/PREDICT_410/SAS_Data/' access=readonly; proc contents data=mydata.ames_housing_data; run; quit;
+**proc print data=mydata.ames_housing_data; run; quit;
+**proc print data=mydata.ames_housing_data (obs=10); run; quit; data temp;
+set mydata.ames_housing_data; format drop_condition $80.;
+
+if (bldgtype ne '1Fam') then drop_condition='01: Non Single Family House'; else if (YearBuilt <1950) then drop_condition='02: Built Pre-1950';
+else if (TotalBsmtSF < 1) then drop_condition='03: No Basement'; else if (GrLivArea <800) then drop_condition='04: LT 800 SQFT';
+else if (PavedDrive ne 'Y') then drop_condition='05: Not Paved Driveway'; else if (PoolQC ne 'NA') then drop_condition='06: Has Pool';
+else if (SaleCondition ne 'Normal') then drop_condtion='07: Not Normal Sale of House'; else if (LotShape = 'IR3') then drop_condition= '08: Irregular shape';
+else if (Utilities ne 'AllPub') then drop_condition='09: Does not have all utilities'; else drop_condition='10: Sample Population';
+run;
+
+proc freq data=temp;
+tables drop_condition; title 'Drop conditions';
+run; quit;
+
+
+data ames_sample;
+set mydata.ames_housing_data;
+if (bldgtype ne '1Fam') then delete; else if (YearBuilt <1950) then delete; else if (TotalBsmtSF < 1) then delete; else if (GrLivArea <800) then delete; else if (PavedDrive ne 'Y') then delete; else if (PoolQC ne 'NA') then delete;
+else if (SaleCondition ne 'Normal') then delete; else if (LotShape = 'IR3') then delete;
+else if (Utilities ne 'AllPub') then delete; else;
+
+
+**dummy vars;
+
+*	Central Air Indicator;
+if (CentralAir='Y') then central_air=1; else central_air=0;
+*	Fireplace Indicator;
+if (Fireplaces>0) then fireplace_ind=1; else fireplace_ind=0;
+*	Garage Indicator;
+if (GarageCars>0) then garage_ind=1; else garage_ind=0;
+*	Good Basement Indicator;
+ 
+if (BsmtQual in ('Ex','Gd')) or (BsmtCond in ('Ex','Gd')) then good_basement_ind=1; else good_basement_ind=0;
+
+run; quit;
+
+data transformed; set ames_sample;
+logsaleprice = log (saleprice); run;
+
+data temp1;
+set transformed;
+u = uniform (123);
+if (u<0.70) then train=1; else train=0;
+
+if (train=1) then train_response = saleprice; else train_response = .;
+run;
+
+proc freq data=temp1;
+tables train;
+title 'AMES HOUSING Train-Test Table';
+
+*selecting using adj rsq; proc reg data=temp1;
+model train_response = good_basement_ind central_air fireplace_ind garage_ind Grlivarea totalbsmtsf firstflrsf secondflrsf lotarea lotfrontage masvnrarea yearbuilt garagearea overallqual overallcond fullbath/selection=adjrsq best=10;
+run; quit;
+
+
+proc reg data=temp1;
+model train_response = good_basement_ind central_air fireplace_ind garage_ind Grlivarea totalbsmtsf firstflrsf secondflrsf lotarea lotfrontage masvnrarea yearbuilt garagearea overallqual overallcond fullbath/selection=adjrsq start=3 stop=8 best=1;
+run;
+
+*Improve using max r-sq selection; proc reg data=temp1;
+model train_response = good_basement_ind central_air fireplace_ind garage_ind Grlivarea totalbsmtsf firstflrsf secondflrsf lotarea lotfrontage masvnrarea yearbuilt garagearea overallqual overallcond fullbath/selection=maxr best=10;
+run;
+
+*Mallow's Cp;
+proc reg data=temp1;
+model train_response = good_basement_ind central_air fireplace_ind garage_ind Grlivarea totalbsmtsf firstflrsf secondflrsf lotarea lotfrontage masvnrarea yearbuilt garagearea overallqual overallcond fullbath/selection=cp start=3 stop=8 best=10;
+ 
+run;
+
+*forward;
+proc reg data=temp1;
+model train_response = good_basement_ind central_air fireplace_ind garage_ind Grlivarea totalbsmtsf firstflrsf secondflrsf lotarea lotfrontage masvnrarea yearbuilt garagearea overallqual overallcond fullbath/selection=forward slentry=0.15;
+run;
+*backward;
+proc reg data=temp1;
+model train_response = good_basement_ind central_air fireplace_ind garage_ind Grlivarea totalbsmtsf firstflrsf secondflrsf lotarea lotfrontage masvnrarea yearbuilt garagearea overallqual overallcond fullbath/selection=backward slstay=0.1;
+run;
+*step-wise;
+proc reg data=temp1;
+model train_response = good_basement_ind central_air fireplace_ind garage_ind Grlivarea totalbsmtsf firstflrsf secondflrsf lotarea lotfrontage masvnrarea yearbuilt garagearea overallqual overallcond fullbath/selection=stepwise slentry=0.15 slstay=0.1;
+run;
+*adj r-sq, AIC, and BIC for each model above; ods graphics on;
+title"Calculating Adj. R-squared, AIc, and BIC for Model_AdjR2, Model_MaxR, Model_MCp, Model_F, Model_B, and Model_S";
+proc reg data=temp1 outset=est;
+model train_response = good_basement_ind central_air fireplace_ind garage_ind Grlivarea totalbsmtsf firstflrsf secondflrsf lotarea lotfrontage masvnrarea yearbuilt garagearea overallqual overallcond fullbath/selection= AdjRsq AIC BIC best=5;
+run;
+ods graphics off;
+proc print data=est; run;
+***model set 1 (adjrsq and mcp); ods graphics on;
+title"Calculating Adj. R-squared, AIc, and BIC for Model-1"; proc reg data=temp1 outset=est;
+model train_response = Grlivarea totalbsmtsf lotarea masvnrarea yearbuilt garagearea overallqual overallcond/selection= AdjRsq AIC BIC best=1;
+run;
+ods graphics off;
+proc print data=est; run;
+
+proc reg data=temp1;
+model train_response = Grlivarea totalbsmtsf lotarea masvnrarea yearbuilt garagearea overallqual overallcond/VIF;
+output out=MCp_fit pred=yhat; run;
+*absolue and square residuals; data residual_data_MCp;
+set MCp_fit;
+residual = SalePrice-yhat; absolute_residual = abs(residual);
+ 
+square_residual = residual**2; run;
+
+*MAE & MSE;
+proc means data=residual_data_MCp mean nway; class train;
+var absolute_residual square_residual; title"MAE & MSE for Model-1";
+output out=error_metrics_MCp mean(absolute_residual)=mean_abs_res mean(square_residual) = mean_square_res;
+run;
+
+
+
+
+***model set2 (greedy vars--fwd,bkwd,stepwise); ods graphics on;
+title"Calculating Adj. R-squared, AIc, and BIC for Model-2"; proc reg data=temp1 outset=est;
+model train_response = central_air GrLivArea TotalBsmtSF LotArea MasVnrArea YearBuilt GarageArea OverallQual OverallCond FullBath/selection= AdjRsq AIC BIC best=1;
+run;
+ods graphics off;
+proc print data=est; run;
+
+
+proc reg data=temp1;
+model train_response = central_air GrLivArea TotalBsmtSF LotArea MasVnrArea YearBuilt GarageArea OverallQual OverallCond FullBath/VIF;
+output out=MCp_fit pred=yhat; run;
+*absolue and square residuals; data residual_data_MCp;
+set MCp_fit;
+residual = SalePrice-yhat; absolute_residual = abs(residual); square_residual = residual**2; run;
+
+*MAE & MSE;
+proc means data=residual_data_MCp mean nway; class train;
+var absolute_residual square_residual; title"MAE & MSE for Model-2";
+output out=error_metrics_MCp mean(absolute_residual)=mean_abs_res mean(square_residual) = mean_square_res;
+run;
+
+
+****model set3 (Maxr); ods graphics on;
+ 
+title"Calculating Adj. R-squared, AIC, and BIC for Model-3"; proc reg data=temp1 outset=est;
+model train_response = good_basement_ind central_air fireplace_ind garage_ind GrLivArea TotalBsmtSF LotArea LotFrontage MasVnrArea YearBuilt GarageArea OverallQual OverallCond FullBath/selection= AdjRsq AIC BIC best=1;
+run;
+ods graphics off;
+proc print data=est; run;
+
+
+proc reg data=temp1;
+model train_response = good_basement_ind central_air fireplace_ind garage_ind GrLivArea TotalBsmtSF LotArea LotFrontage MasVnrArea YearBuilt GarageArea OverallQual OverallCond FullBath/VIF;
+output out=MCp_fit pred=yhat; run;
+**absolue and square residuals; data residual_data_MCp;
+set MCp_fit;
+residual = SalePrice-yhat; absolute_residual = abs(residual); square_residual = residual**2; run;
+
+**MAE *& MSE;
+proc means data=residual_data_MCp mean nway; class train;
+var absolute_residual square_residual; title"MAE & MSE for Model-3";
+output out=error_metrics_MCp mean(absolute_residual)=mean_abs_res mean(square_residual) = mean_square_res;
+run;
+
+************************************;
+*multicollinearity w VIF; proc reg data=temp1;
+model train_response = central_air GrLivArea TotalBsmtSF LotArea MasVnrArea YearBuilt
+GarageArea OverallQual OverallCond FullBath/VIF; output out=MCp_fit pred=yhat;
+run;
+**absolue and square residuals; data residual_data_MCp;
+set MCp_fit;
+residual = SalePrice-yhat; absolute_residual = abs(residual); square_residual = residual**2; run;
+
+**MAE *& MSE;
+ 
+proc means data=residual_data_MCp mean nway; class train;
+var absolute_residual square_residual; title"MAE & MSE for MCp";
+output out=error_metrics_MCp mean(absolute_residual)=mean_abs_res mean(square_residual) = mean_square_res;
+run;
+
+
+proc format; value grade_fmt
+0 - 0.10 = 'Grade 1'
+0.10 <- 0.15 = 'Grade 2'
+0.15 <- high = 'Grade 3'
+;
+run;
+
+data grades_MCp;
+set residual_data_MCp;
+
+format Prediction_Grade $7.; format percent 3.2;
+grade = absolute_residual/SalePrice; prediction_Grade = put(grade, grade_fmt.); perfect = grade * 100;
+where train = 0; run;
+
+proc freq data=grades_MCp; tables Prediction_Grade; title 'Prediction Grade';
