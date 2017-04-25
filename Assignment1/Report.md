@@ -1,4 +1,4 @@
-# Introduction:
+## Introduction:
 
 This report explains the regression models for the home sale price of a defined sample
 population of houses using the housing data of Ames population from 2,930 observations
@@ -13,7 +13,7 @@ regression models for the home sale price. I used the goodness of fit (GOF) usin
 from SAS. I, then, compared the simple and multiple regression models. In conclusion, based on
 my analysis, I was able to deduce the model that worked the best for our response variable (y).
 
-# Sample population:
+## Sample population:
 
 The sample population for this study includes all small family houses that were built after year
 1950, have a basement, have a gross living area square foot less than 800 sq. ft., consist of a
@@ -29,3 +29,19 @@ SAS. The waterfall exercise dropped my sample size to 1431 houses from the origi
 required by the study. It is also important to note that SAS dropped 330 houses and named them
 “Missing” during the course of data. These houses are also not included in the sample data and
 left out for the purpose of this study as out-of scope observations.
+
+![image](https://cloud.githubusercontent.com/assets/26909910/25399075/32f3b208-29bc-11e7-9f42-7a1813724fcf.png)
+
+### Table 1: A detailed list of drop conditions to deduce the Sample size.
+
+## Predictor variables:
+
+This study now have four key variables that will help determine the Sale Price of the houses that
+are a part of the study. Therefore, the correlation coefficients of four continuous predictor
+variables – First Floor SF, Living area SF, Basement SF, and Lot Area SF – and one discrete
+variable – Year built – with sale price is computed using Pearson product-moment correlation coefficient in SAS. The correlation coefficients helped identify the linear relationship between
+the response variable (Y) – Sale Price – and regressor variables (Xi). An illustration of the
+correlation coefficient table validating above findings is presented in Table 2. In addition, the
+linear relationship between the regressor and each response variable is shown with the help of
+scatter plots in figure 1, 2, 3, 4, and 5.
+
