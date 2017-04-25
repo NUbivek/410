@@ -34,6 +34,7 @@ Computation of adjusted r-square aids the ability to make a decision on how many
     
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405120/41bc1258-29d0-11e7-9329-fe62b4a402a7.png)
    #### Table 3: Ten best models using the Adjusted R-squared technique without specific criterion
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405126/47811634-29d0-11e7-8c15-a4a049f18d6f.png)
    #### Table 4: Best model using the Adjusted R-squared technique with specific criterion
 
@@ -48,6 +49,7 @@ Unlike the adjusted r-square variable selection technique, the maximumr selectio
     + 41*GarageArea + 15232*OverallQual + 8903*OverallCond + (-12003)*FullBath
     
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405267/cd88e694-29d0-11e7-8a03-fde177cd0b8e.png)
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405272/d1788430-29d0-11e7-9eac-2a9788ede944.png)
    #### Table 5: ANOVA and Parameter Estimates model using the MaxR technique
    
@@ -73,6 +75,7 @@ The forward selection model technique is one of the techniques under the broader
 
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405429/3fd6d17a-29d1-11e7-9e7a-205926dc5b5f.png)
    #### Table 7: Summary of Backward variable selection process
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405449/54a65454-29d1-11e7-8a04-626df2892c33.png)
    #### Table 8: ANOVA and Parameter Estimates model using the Forward technique
    
@@ -89,6 +92,7 @@ Meaning, the method begins computing by selecting all predictor variables, and e
  
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405523/8f4e2122-29d1-11e7-81dc-aa68018b34ff.png)
    #### Table 9: ANOVA and Parameter Estimates model using the backward technique
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405557/aa590266-29d1-11e7-88c4-6c4ed0fb8555.png)
    #### Table 10: Summary of Backward variable selection process
    
@@ -103,6 +107,7 @@ The third leg of the broader “Greedy Variable Selection” technique is Stepwi
     
  ![image](https://cloud.githubusercontent.com/assets/26909910/25405832/95a2f448-29d2-11e7-9e60-e3c4558d6c10.png)
    #### Table 11: Summary of Stepwise variable selection process
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405838/9b03a86a-29d2-11e7-9180-c962d06390f9.png)
    #### Table 12: ANOVA and Parameter Estimates model using the stepwise technique
    
@@ -125,6 +130,7 @@ In order to verify the predictive accuracy of the three models above, I calculat
 
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405973/15de4af4-29d3-11e7-9588-cd9eb2156ddb.png)
    #### Table 13: Adjusted R-squared, AIC, and BIC for Model - 1
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25405984/232ba530-29d3-11e7-87ff-fdd1490c32f9.png)
    #### Table 14: MAE and MSE for Model-1 and test sample
 
@@ -132,6 +138,7 @@ In order to verify the predictive accuracy of the three models above, I calculat
 
 ![image](https://cloud.githubusercontent.com/assets/26909910/25406056/76ed1910-29d3-11e7-95b9-7d568695bbfe.png)
    #### Table 15: Adjusted R-squared, AIC, and BIC for Model - 2
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25406063/7baecb42-29d3-11e7-8d69-f905b0620a67.png)
    #### Table 16: MAE and MSE for Model-2 and test sample
 
@@ -140,13 +147,36 @@ In order to verify the predictive accuracy of the three models above, I calculat
 
 ![image](https://cloud.githubusercontent.com/assets/26909910/25406069/7fa764f2-29d3-11e7-8cdd-5f53448c7fbd.png)
    #### Table 17: Adjusted R-squared, AIC, and BIC for Model - 3
+
 ![image](https://cloud.githubusercontent.com/assets/26909910/25406073/84ddda1e-29d3-11e7-9221-390f9cb9b637.png)
    #### Table 18: MAE and MSE for Model-3 and test sample
 
 Based on the output from Table 13-Table 18, despite Model-3 having the lowest AIC and BIC, and highest Adjusted R-squared and R-square, I would like to pick Model-2 (i.e. the group of Model_F, Model_B, and Model_S) as the optimum model. Model-2 seems to fit both training and test data well with very less discrepancy between the two. Between the three models, Model-2 demonstrated an overall goodness-of-fit and optimum variable selection.
-Multicollinearity for Chosen Model (i.e. Model 2):
+
+## Multicollinearity for Chosen Model (i.e. Model 2):
 
 As shown in Table 19 below the predictor variable with higher VIF has a VIF of 3.28 (which is less than 10); therefore, there is no multicollinearity in the chosen optimum model (i.e. Model-2).
 
+![image](https://cloud.githubusercontent.com/assets/26909910/25406317/445eb12e-29d4-11e7-9fa0-60ea0d31f0f0.png)
+   #### Table 19: Parameter Estimates of Model – 2 (optimum model)
+   
+## Multicollinearity for Model-1 & Model-3:
 
+As presented in Table 20 and 21 below none of the variables in both tables have a  VIF greater than 10; therefore, there is no issue of multicollinearity in any of the above six models.
 
+![image](https://cloud.githubusercontent.com/assets/26909910/25406379/74d9458a-29d4-11e7-9845-45098cf39302.png)
+   #### Table 20: Parameter Estimates of Model – 1 (Model_AdjR & Model_MCp)
+
+![image](https://cloud.githubusercontent.com/assets/26909910/25406392/7bab943a-29d4-11e7-935e-cc7bf2919549.png)
+   #### Table 21: Parameter Estimates of Model – 3 (Model_MaxR)
+   
+## Operational Validation:
+
+About 64% of the data, as shown in the Table 22 below, were in Grade 1, which means that from the 100% of the predicted data about 64% of the predicted values were within the 10% of the actual value. Similarly, about 82% of the predicted values were within the 15% of the actual values. Therefore, the developed model  and selected variables proved to be a fairly accurate prediction of the actual values.
+
+![image](https://cloud.githubusercontent.com/assets/26909910/25406498/d98e56dc-29d4-11e7-8e85-6f8bcc0f0cac.png)
+   #### Table 22: Operational Prediction Validation via Grade for Model 2 (optimum model)
+
+## Summary:
+
+I started with narrowing down the population data to sample data that only  included what was needed to accomplish the original objective, i.e. to predict the  sale price of a typical single-family house. I then used different automated variables selection methods to select the optimum variables. Upon testing different variables on different models, I was able to decide on Model 2 – a combination of all three Greedy variable selection methods – as the optimum model. After deciding the optimum model, I checked for multicollinearity, and ensured that the model was  free of multicollinearity. Finally, I proved the statistical and material (business) significance of the model by grading the predicted values against the actual values. Therefore, the Model 2 is a very useful model for the business to rely on in order to make important decisions.
