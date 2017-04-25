@@ -82,5 +82,59 @@ Table 6: Coefficient of Determination
 
 Table 7: Parameter Estimates for Model1
 
+Table 7 includes a VIF column that helps to detect the non-pairwise correlation. VIF values in Table 7 indicate that the model does not have a serious multicollinearity issues. Generally speaking, a model is said to have high multicollinearity if the VIF values of the model is greater than 5. VIF value higher than 5 generally mean that the multicollinearity level in the model is
+ 
+higher than acceptable, and is seriously flawed. However, a VIF value of 3 or higher does indicate a fairly mild multicollinearity issue, and Model1 shows multiple instances of higher than 3 VIF value. Therefore, even though the model does not have serious multicollinearity issue, it does suffer from some level of multicollinearity.
 
+![image](https://cloud.githubusercontent.com/assets/26909910/25407861/fb056404-29d9-11e7-97b6-2fd9f9963f13.png)
+
+Figure 5: Residual Plot for Model1
+
+## Predictive Accuracy and Goodness-of-fit:
+
+After performing the residual analysis, and evaluating the VIF of the model, we calculated mean square error and mean absolute error for both, train and test, datasets. Table 8 below shows the MES and MAE output for Model1, which further confirms that Model 1 is fairly an accurate depiction for both, train and test, datasets. Negligible difference in the MAE and MSE for train and test datasets makes it evident that the Model1 works well in both scenarios.
+
+![image](https://cloud.githubusercontent.com/assets/26909910/25407909/27065a2c-29da-11e7-8d4f-4677a850ea72.png)
+
+Table 8: MAE and MSE for train and test datasets
+
+## Model 2 (8 principal components=predictor & train_response=response):
+
+        Model2:
+
+        train_response (log-return VV) = 0.00075978+0.00231*Prin1+0.00032245*Prin2+0.00070635*Prin3
+        +0.00030481*Prin4-0.00017356*Prin5+0.00000315*Prin6-0.00010331*Prin7-0.00040760*Prin8
+
+
+We performed the similar steps as performed in Model1 to compute the ANOVA table, Coefficient determination, residual plot analysis, and VIF evaluation using parameter estimates for Model2. Tables 9 thru 12 present the ANOVA table, Coefficient determination, residual plot analysis, and VIF evaluation using parameter estimates in order.
+
+![image](https://cloud.githubusercontent.com/assets/26909910/25407958/59c52718-29da-11e7-8d79-25a35635eb29.png)
+
+Table 9: ANOVA table for Model2
+
+ANOVA table above shows the p-value less than 0.0001, which is similar to the p-value of Model1. This confirms the non-zero slope of the model. Similarly, Adjusted R-squared presented in Table 10 shows the model variance of about 89% for Model2, which is very close to the model variance of Model1 with a total of 20 predictor variables. We further test the model accuracy, and goodness-of-fit by using the residual plot for the model below.
+
+![image](https://cloud.githubusercontent.com/assets/26909910/25407986/6ea914c8-29da-11e7-9fe2-56f9e2fd30a0.png)
+
+Table 10: Coefficient determination table for Model2
+
+![image](https://cloud.githubusercontent.com/assets/26909910/25408002/7d33d3fc-29da-11e7-986d-3868b7c6bb94.png)
+
+Table 11: Parameter Estimates table for Model2
+
+![image](https://cloud.githubusercontent.com/assets/26909910/25408014/89e83962-29da-11e7-927b-c1eb981a25f8.png)
+
+Table 12: Residual plots for Model2
+
+Similar to what we presented in Model1, Table 11 includes a VIF column that helps to detect the non-pairwise correlation. VIF values in Table 11 indicate that the model does not have any multicollinearity issues. Generally speaking, a model is said to have high multicollinearity if the VIF values of the model is greater than 5. VIF value higher than 5 generally mean that the multicollinearity level in the model is higher than acceptable, and is seriously flawed. However, a VIF value of 3 or higher does indicate a fairly mild multicollinearity issue, and Model1 shows multiple instances of higher than 3 VIF value, but Model2 does not show any indication of higher than 1 VIF value. Therefore, Model2 does not have any multicollinearity issue whatsoever. In addition, the residual plots shown in Table 12 indicate that the model is approximately normally distributed, and possesses constant variance. Hence, Model2 passes the initial adequacy and viability test. We further test the predictive accuracy of the model using the mean square error and mean absolute error for Model2. Table 13 below shows the calculation of MSE and MAE for Model2:
+
+![image](https://cloud.githubusercontent.com/assets/26909910/25408061/b23e9b22-29da-11e7-8b86-a61787b8b018.png)
+
+Table 13: MSE and MAE for Model2
+
+The MSE and MAE for both, train and test, datasets have a negligible difference between the two. Therefore, this further confirms that Model2 is an accurate depiction for both, train and test, datasets. Negligible difference in the MAE and MSE for train and test datasets makes it evident that the Model2 works well in both scenarios.
+
+## Conclusion:
+
+In this report leveraging the principal component analysis process, we evaluated two different OLS regression models – Model1 and Model2. We started by selecting the principal components, and verifying with reasoning that 8 principal components is an ideal number of principal coefficients to perform the analysis. We then built two models one with 20 predictor variables (Model1) and other with 8 predictor variables (Model2). Model1 used all stock log- returns against the market index log-returns (VV), and had multicollinearity issues. There were multiple instances when the VIFs of Model1 exceeded 3. Whereas, the second model – Model2 – with only 8 total predictor variables used the first 8 principal components, and totally eliminated the multicollinearity issue. Therefore, we verified and presented in action PCA’s ability to eliminate multicollinearity issues through this exercise.
 
