@@ -24,5 +24,7 @@ Upon illustrating eigenvalues and corresponding difference, proportion, and cumu
 ![image](https://cloud.githubusercontent.com/assets/26909910/25407199/800964a0-29d7-11e7-875f-e4c0c55c4074.png)
 
 ![image](https://cloud.githubusercontent.com/assets/26909910/25407211/8afc59bc-29d7-11e7-8ce0-9cafeb1a4f01.png)
-![image](https://cloud.githubusercontent.com/assets/26909910/25407222/964a98ec-29d7-11e7-840e-fdd670d06269.png)
+![image](https://cloud.githubusercontent.com/assets/26909910/25407298/d2c25a44-29d7-11e7-9225-cb7703ed5494.png)
 
+![image](https://cloud.githubusercontent.com/assets/26909910/25407237/a14018ee-29d7-11e7-9cf1-26f567a9e320.png)
+![image](https://cloud.githubusercontent.com/assets/26909910/25407248/a90e4988-29d7-11e7-9cfc-6926e9b68902.png)
