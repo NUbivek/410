@@ -1,0 +1,99 @@
+libname mydata'/scs/crb519/PREDICT_410/SAS_Data/' access=readonly;
+proc contents data=mydata.ames_housing_data; run; quit;
+proc print data=mydata.ames_housing_data; run; quit;
+proc print data=mydata.ames_housing_data (obs=10); run; quit;
+data temp;
+set mydata.ames_housing_data;
+format drop_condition $80.;
+if (bldgtype ne '1Fam') then drop_condition='01: Non Single Family House';
+else if (YearBuilt <1950) then drop_condition='02: Built Pre-1950';
+else if (TotalBsmtSF < 1) then drop_condition='03: No Basement';
+else if (GrLivArea <800) then drop_condition='04: LT 800 SQFT';
+else if (PavedDrive ne 'Y') then drop_condition='05: Not Paved Driveway';
+else if (PoolQC ne 'NA') then drop_condition='06: Has Pool';
+else if (SaleCondition ne 'Normal') then drop_condtion='07: Not Normal Sale of
+House';
+else if (LotShape = 'IR3') then drop_condition= '08: Irregular shape';
+else if (Utilities ne 'AllPub') then drop_condition='09: Does not have all utilities';
+else drop_condition='10: Sample Population';
+run;
+proc freq data=temp;
+tables drop_condition;
+title 'Drop conditions';
+run; quit;
+data ames_sample;
+set mydata.ames_housing_data;
+if (bldgtype ne '1Fam') then delete;
+else if (YearBuilt <1950) then delete;
+else if (TotalBsmtSF < 1) then delete;
+else if (GrLivArea <800) then delete;
+else if (PavedDrive ne 'Y') then delete;
+else if (PoolQC ne 'NA') then delete;
+else if (SaleCondition ne 'Normal') then delete;
+else if (LotShape = 'IR3') then delete;
+else if (Utilities ne 'AllPub') then delete;
+else;
+run;
+quit;
+
+Title 'Correlation coefficient for Sale Price';
+ods graphics on;
+proc corr data=ames_sample nosimple rank plots=(scatter);
+var firstflrsf grlivarea lotarea yearbuilt totalbsmtsf;
+with SalePrice;
+run;
+ods graphics off;
+ods graphics on;
+proc reg data=ames_sample plots(unpack);
+model saleprice = grlivarea;
+
+title 'Model I: Single Regression Model of General Living Area with Sale Price';
+run;
+ods graphics off;
+ods graphics on;
+proc reg data=ames_sample plots(unpack);
+model saleprice = totalbsmtsf;
+
+title 'Model II: Single Regression Model of Year built with Sale Price';
+run;
+ods graphics off;
+ods graphics on;
+proc reg data=ames_sample plots(unpack);
+model saleprice = grlivarea totalbsmtsf;
+
+title 'Model III: Multiple Regression Model of General Living Area and year built
+combined with Sale Price';
+run;
+ods graphics off;
+data transformed;
+set ames_sample;
+logsaleprice = log (saleprice);
+run;
+ods graphics on;
+proc reg data=transformed plots(unpack);
+model logsaleprice = totalbsmtsf;
+
+title 'Model IV: Single Regression Model of general living area with log scale price';
+run;
+ods graphics off;
+ods graphics on;
+proc reg data=transformed plots(unpack);
+
+
+model logsaleprice = grlivarea totalbsmtsf;
+title 'Model V: Multiple Regression Model combining general living area and year
+built with log sale price';
+run;
+ods graphics off;
+data droppingoutlier;
+set ames_sample;
+format drop_condition $50.;
+if (grlivarea >3000) then drop_condition='01: Most of values for general living area
+is under 3000';
+else if (totalbsmtsf >2000) then drop_condition='02: Basement area for most houses
+are under 2000';
+else drop_condition = '03: Sample Population';
+run; quit;
+proc freq data=droppingoutlier;
+tables drop_;
+title 'AMES Housing Outlier';
